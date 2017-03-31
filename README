@@ -1,0 +1,32 @@
+SimpleMandelbrotSet
+===================
+
+About
+-----
+
+SimpleMandelbrotSet is a simple Mandelbrot set visualizer written in
+FreeBASIC as a learning exercise.
+
+Controls
+--------
+
+'w' key		-	Shift offset up
+'a' key		-	Shift offset left
+'s' key		-	Shift offset down
+'d' key		-	Shift offset right
+'q' key		-	Zoom out
+'e' key		-	Zoom in
+'x' key		-	Exit program
+
+Licensing
+---------
+
+SimpleMandelbrotSet is released under the BSD 2-clause "Simplified"
+License.
+
+See the file LICENSE for copying conditions.
+
+Contact
+-------
+
+William Breathitt Gray <vilhelm.gray@gmail.com>
