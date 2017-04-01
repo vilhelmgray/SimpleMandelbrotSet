@@ -29,6 +29,7 @@ Dim Shared zoom As Double = 4
 Dim Shared zoom_step As Double
 Dim Shared offset_x As Double = 0
 Dim Shared offset_y As Double = 0
+Dim Shared res_step As Integer = &H10000
 
 ScreenRes scrn_width, scrn_height, 16
 
@@ -38,7 +39,7 @@ Sub drawMandelbrotPoint(ByVal x As Double, ByVal y As Double)
 
         Dim z_x As Double = r
         Dim z_y As Double = i
-        For iter As Integer = &H1 to &HFFFFFF
+        For iter As Integer = &H1 to &HFFFFFF Step res_step
                 Dim z_x_next As Double = z_x*z_x - z_y*z_y + r
                 z_y = 2*z_x*z_y + i
                 z_x = z_x_next
@@ -64,6 +65,10 @@ Dim k As String
 Do
         drawMandelbrotSet
 
+	Print "Offset: (" & offset_x & "," & offset_y &")"
+	Print "Zoom: " & zoom
+	Print "Resolution step: " & res_step
+
         Do
                 k = InKey$
                 Select Case k
@@ -86,6 +91,14 @@ Do
                         Case "e"
                                 zoom /= 2
                                 zoom_step = zoom / scrn_width
+                                Exit Do
+			Case "z"
+				res_step *= 2
+                                Exit Do
+			Case "c"
+				If res_step > 1 Then
+					res_step /= 2
+				End If
                                 Exit Do
                         Case "x"
                                 End

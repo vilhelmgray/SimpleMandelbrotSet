@@ -16,6 +16,8 @@ Controls
 'd' key		-	Shift offset right
 'q' key		-	Zoom out
 'e' key		-	Zoom in
+'z' key		-	Increase resolution step
+'c' key		-	Decrease resolution step
 'x' key		-	Exit program
 
 Licensing
