@@ -33,6 +33,29 @@ Dim Shared res_step As Integer = &H10000
 
 ScreenRes scrn_width, scrn_height, 16
 
+Function getMandelbrotColor(ByVal iter As UInteger) As UInteger
+        Dim color_scale As UInteger = iter Mod &H100
+
+        Select Case As Const iter
+                Case &H0 To &HFF
+                        Return &H0000FF Or (color_scale Shl 8)
+                Case &H100 To &H1FF
+                        color_scale = &HFF - color_scale
+                        Return &H00FF00 Or color_scale
+                Case &H200 To &H2FF
+                        Return &H00FF00 Or (color_scale Shl 16)
+                Case &H300 To &H3FF
+                        color_scale = &HFF - color_scale
+                        Return &HFF0000 Or (color_scale Shl 8)
+                Case &H400 To &H4FF
+                        Return &HFF0000 Or color_scale
+                Case &H500 To &H5FF
+                        Return &HFF00FF Or (color_scale Shl 8)
+        End Select
+
+        Return &H000000
+End Function
+
 Sub drawMandelbrotPoint(ByVal x As Double, ByVal y As Double)
         Dim r As Double = zoom_step*x - zoom/2 + offset_x
         Dim i As Double = zoom_step*y - zoom/2 + offset_y
@@ -40,14 +63,18 @@ Sub drawMandelbrotPoint(ByVal x As Double, ByVal y As Double)
         Dim z_x As Double = r
         Dim z_y As Double = i
         Const max_iter As UInteger = &HFFFFFF
-        For iter As UInteger = &H1 to max_iter Step res_step
+        For iter As UInteger = &H0 to max_iter Step res_step
                 Dim z_x_next As Double = z_x*z_x - z_y*z_y + r
                 z_y = 2*z_x*z_y + i
                 z_x = z_x_next
 
                 If (z_x >= 2 Or z_y >= 2) Then
-                        Dim res_max As UInteger = Fix(max_iter / res_step)
-                        Dim pixel_color As UInteger = Fix(iter / max_iter * res_max)
+                        Dim spectrum_point As Double = (iter + 1) / (max_iter + 1)
+                        Dim res_scale As UInteger = Fix(&H600 * spectrum_point)
+                        If res_scale >= 1 Then
+                                res_scale -= 1
+                        End If
+                        Dim pixel_color As UInteger = getMandelbrotColor(res_scale)
                         Pset (x, y), pixel_color
                         Exit Sub
                 End If
