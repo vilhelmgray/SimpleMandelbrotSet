@@ -39,13 +39,16 @@ Sub drawMandelbrotPoint(ByVal x As Double, ByVal y As Double)
 
         Dim z_x As Double = r
         Dim z_y As Double = i
-        For iter As Integer = &H1 to &HFFFFFF Step res_step
+        Const max_iter As UInteger = &HFFFFFF
+        For iter As UInteger = &H1 to max_iter Step res_step
                 Dim z_x_next As Double = z_x*z_x - z_y*z_y + r
                 z_y = 2*z_x*z_y + i
                 z_x = z_x_next
 
                 If (z_x >= 2 Or z_y >= 2) Then
-                        Pset (x, y), iter
+                        Dim res_max As UInteger = Fix(max_iter / res_step)
+                        Dim pixel_color As UInteger = Fix(iter / max_iter * res_max)
+                        Pset (x, y), pixel_color
                         Exit Sub
                 End If
         Next iter
